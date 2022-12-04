@@ -1,0 +1,55 @@
+AUTOMATIC WATER TANK CLEANING :
+
+
+int sw=D6;
+int water_sensor=D7;
+int water_pump=D1;
+int valve=D2;
+int motor=D3;
+
+void setup() 
+{
+  pinMode(water_pump,OUTPUT);
+  pinMode(valve,OUTPUT);
+  pinMode(motor,OUTPUT);
+  digitalWrite(water_pump,1);
+  digitalWrite(valve,1);
+  digitalWrite(motor,1);
+  pinMode(sw,INPUT_PULLUP);
+  pinMode(water_sensor,INPUT_PULLUP);
+  Serial.begin(9600);
+  Serial.println("Serial communication begin");
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  if(digitalRead(sw)==0)
+  {
+    Serial.println(" PROCESS START"); 
+    delay(2000);
+    Serial.println("Checking Water Level");
+    if(digitalRead(water_sensor)==0)
+    {
+      Serial.println("Valve ON");
+      digitalWrite(valve,0);
+      while(digitalRead(water_sensor)==0);
+      digitalWrite(valve,1)` ;
+      digitalWrite(motor,0);
+      delay(30000);
+      digitalWrite(water_pump,0);
+      delay(5000);
+      digitalWrite(water_pump,1);
+      digitalWrite(motor,1);
+      Serial.println("Valve ON");
+      digitalWrite(valve,0);
+      while(digitalRead(water_sensor)==0);
+      digitalWrite(valve,1);
+      digitalWrite(motor,0);
+    }
+    else
+    {
+      Serial.println("Cleaning Process Started");
+    }
+  }
+}
